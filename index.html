@@ -440,7 +440,11 @@ document.getElementById("popupData").innerHTML=`
 
 <p>${p.desc}</p>
 
-<a href="${formLink}" target="_blank"
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=pp_url
+&entry.166477120=${encodeURIComponent(p.name)}
+&entry.178886703=${p.price}
+&entry.509043788=Cash+on+Delivery+(+COD+)"
+target="_blank"
 class="btn buy"
 style="padding:10px;font-size:14px;">
 Buy Now
@@ -471,6 +475,7 @@ updateCartUI();
 
 </body>
 </html>
+
 
 
 
