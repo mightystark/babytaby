@@ -3,154 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babytaby - Baby Products</title>
+<title>Babytaby Store</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #fff4f8;
+body{
+  font-family: Arial;
+  margin:0;
+  background:#f8f8f8;
 }
 
-header {
-    background: linear-gradient(90deg,#ff8fab,#ffb3c6);
-    padding: 15px;
-    text-align: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+/* HEADER */
+header{
+  background:#ff6b81;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
-    gap: 15px;
-    padding: 15px;
+.cart-icon{
+  cursor:pointer;
+  font-weight:bold;
 }
 
-.product {
-    background: white;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    text-align: center;
+.banner{
+  background:#ffe9ec;
+  padding:20px;
+  text-align:center;
 }
 
-.product img {
-    width: 100%;
-    border-radius: 10px;
+.banner h2{
+  margin:0;
+  color:#ff6b81;
 }
 
-button {
-    background: #ff4d6d;
-    border: none;
-    color: white;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    cursor: pointer;
+.banner p{
+  margin:5px 0;
+  font-weight:bold;
 }
 
-button:hover {
-    background: #e63956;
+/* PRODUCTS */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+  padding:15px;
 }
 
-.cart {
-    background: white;
-    padding: 15px;
-    margin: 15px;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+.card{
+  background:white;
+  padding:10px;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  position:relative;
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  border-radius:8px;
+}
+
+.price{
+  color:#ff6b81;
+  font-weight:bold;
+}
+
+.old-price{
+  text-decoration:line-through;
+  color:gray;
+  font-size:14px;
+}
+
+.badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:gold;
+  padding:4px 8px;
+  font-size:12px;
+  font-weight:bold;
+  border-radius:5px;
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  overflow:auto;
+}
+
+.modal-content{
+  background:white;
+  width:90%;
+  max-width:400px;
+  margin:40px auto;
+  padding:15px;
+  border-radius:10px;
+}
+
+.slider img{
+  width:100%;
+  border-radius:10px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+}
+
+button{
+  background:#ff6b81;
+  color:white;
+  border:none;
+  padding:10px;
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.close{
+  float:right;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* CART */
+.cart-item{
+  border-bottom:1px solid #ddd;
+  padding:8px 0;
+}
+
+.total{
+  font-weight:bold;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<header>Babytaby 🍼</header>
+<header>
+  <div>Babytaby</div>
+  <div class="cart-icon" onclick="openCart()">Cart (<span id="cartCount">0</span>)</div>
+</header>
 
-<div class="products">
-
-<div class="product">
-<img src="https://via.placeholder.com/200" />
-<h4>Baby Knee Pads</h4>
-<p>₹199</p>
-<button onclick="addToCart('Baby Knee Pads',199)">Add to Cart</button>
+<div class="banner">
+  <h2>Cute essentials for your cute baby</h2>
+  <p>Sale is live. Free shipping always</p>
+  <p>Cash on Delivery Available</p>
 </div>
 
-<div class="product">
-<img src="https://via.placeholder.com/200" />
-<h4>Baby Head Protector</h4>
-<p>₹399</p>
-<button onclick="addToCart('Baby Head Protector',399)">Add to Cart</button>
+<div class="products" id="productList"></div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">X</span>
+    <div class="slider" id="slider"></div>
+    <h3 id="modalName"></h3>
+    <p id="modalDesc"></p>
+    <p>
+      <span class="old-price" id="modalOldPrice"></span>
+      <span class="price" id="modalPrice"></span>
+    </p>
+    <div class="qty">
+      <button onclick="changeQty(-1)">-</button>
+      <span id="quantity">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+    <button onclick="addToCart()">Add To Cart</button>
+  </div>
 </div>
 
-<div class="product">
-<img src="https://via.placeholder.com/200" />
-<h4>Feeding Bottle Set</h4>
-<p>₹299</p>
-<button onclick="addToCart('Feeding Bottle Set',299)">Add to Cart</button>
-</div>
-
-<div class="product">
-<img src="https://via.placeholder.com/200" />
-<h4>Baby Romper</h4>
-<p>₹349</p>
-<button onclick="addToCart('Baby Romper',349)">Add to Cart</button>
-</div>
-
-<div class="product">
-<img src="https://via.placeholder.com/200" />
-<h4>Baby Bath Towel</h4>
-<p>₹249</p>
-<button onclick="addToCart('Baby Bath Towel',249)">Add to Cart</button>
-</div>
-
-</div>
-
-<div class="cart">
-<h3>🛒 Your Cart</h3>
-<ul id="cartItems"></ul>
-<h4>Total: ₹<span id="total">0</span></h4>
-<button onclick="checkout()">Checkout (COD)</button>
+<!-- CART MODAL -->
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCart()">X</span>
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="total" id="cartTotal"></div>
+    <button onclick="orderWhatsApp()">Order on WhatsApp</button>
+  </div>
 </div>
 
 <script>
-let cart = [];
 
-function addToCart(name, price) {
-    cart.push({name, price});
-    displayCart();
+let whatsappNumber = "918889446299";
+
+let products = [
+{
+id:1,
+name:"3-in-1 Baby Safety Protection Set",
+price:399,
+oldPrice:599,
+bestSeller:true,
+description:"Head protector + Back cushion + Knee pads. Absorbs impact, protects from falls & crawling injuries. Soft & breathable safety combo.",
+images:[
+"https://via.placeholder.com/400x300?text=Protection+1",
+"https://via.placeholder.com/400x300?text=Protection+2",
+"https://via.placeholder.com/400x300?text=Protection+3",
+"https://via.placeholder.com/400x300?text=Protection+4",
+"https://via.placeholder.com/400x300?text=Protection+5"
+]
+},
+{
+id:2,
+name:"360° Spill-Proof Baby Feeding Bowl",
+price:249,
+oldPrice:299,
+bestSeller:true,
+description:"Rotating inner bowl stays upright. BPA free, spill-proof, easy grip handles. Perfect for babies 6+ months.",
+images:[
+"https://via.placeholder.com/400x300?text=Bowl+1",
+"https://via.placeholder.com/400x300?text=Bowl+2",
+"https://via.placeholder.com/400x300?text=Bowl+3",
+"https://via.placeholder.com/400x300?text=Bowl+4",
+"https://via.placeholder.com/400x300?text=Bowl+5"
+]
+},
+{
+id:3,
+name:"Electric Baby Nail Trimmer Set",
+price:349,
+oldPrice:399,
+bestSeller:false,
+description:"Safe electric nail file with LED light. Gentle for newborns & toddlers. Portable & battery operated.",
+images:[
+"https://via.placeholder.com/400x300?text=Trimmer+1",
+"https://via.placeholder.com/400x300?text=Trimmer+2",
+"https://via.placeholder.com/400x300?text=Trimmer+3",
+"https://via.placeholder.com/400x300?text=Trimmer+4",
+"https://via.placeholder.com/400x300?text=Trimmer+5"
+]
+}
+];
+
+let cart=[];
+let currentProduct;
+let currentQty=1;
+let currentImageIndex=0;
+
+function loadProducts(){
+let container=document.getElementById("productList");
+container.innerHTML="";
+products.forEach(p=>{
+container.innerHTML+=`
+<div class="card" onclick="openModal(${p.id})">
+${p.bestSeller?'<div class="badge">Best Seller</div>':''}
+<img src="${p.images[0]}">
+<h4>${p.name}</h4>
+<p class="old-price">₹${p.oldPrice}</p>
+<p class="price">₹${p.price}</p>
+</div>`;
+});
 }
 
-function displayCart() {
-    let list = document.getElementById("cartItems");
-    let total = 0;
-    list.innerHTML = "";
-
-    cart.forEach(item => {
-        total += item.price;
-        list.innerHTML += "<li>" + item.name + " - ₹" + item.price + "</li>";
-    });
-
-    document.getElementById("total").innerText = total;
+function openModal(id){
+currentProduct=products.find(p=>p.id===id);
+currentQty=1;
+currentImageIndex=0;
+document.getElementById("productModal").style.display="block";
+updateModal();
 }
 
-function checkout() {
-    if(cart.length === 0){
-        alert("Cart is empty!");
-        return;
-    }
-
-    let orderSummary = cart.map(item => item.name + " ₹" + item.price).join(", ");
-    let total = cart.reduce((sum,item)=>sum+item.price,0);
-
-    let googleFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform";
-
-    window.location.href = googleFormURL + 
-    "?entry.166477120=" + encodeURIComponent(orderSummary) +
-"&entry.178886703=" + total;
+function updateModal(){
+document.getElementById("slider").innerHTML=`
+<img src="${currentProduct.images[currentImageIndex]}">
+<div style="text-align:center;margin-top:5px;">
+<button onclick="prevImage()">◀</button>
+<button onclick="nextImage()">▶</button>
+</div>`;
+document.getElementById("modalName").innerText=currentProduct.name;
+document.getElementById("modalDesc").innerText=currentProduct.description;
+document.getElementById("modalOldPrice").innerText="₹"+currentProduct.oldPrice;
+document.getElementById("modalPrice").innerText=" ₹"+currentProduct.price;
+document.getElementById("quantity").innerText=currentQty;
 }
+
+function prevImage(){
+currentImageIndex=(currentImageIndex-1+currentProduct.images.length)%currentProduct.images.length;
+updateModal();
+}
+
+function nextImage(){
+currentImageIndex=(currentImageIndex+1)%currentProduct.images.length;
+updateModal();
+}
+
+function changeQty(v){
+currentQty+=v;
+if(currentQty<1) currentQty=1;
+document.getElementById("quantity").innerText=currentQty;
+}
+
+function addToCart(){
+let existing=cart.find(item=>item.id===currentProduct.id);
+if(existing){
+existing.qty+=currentQty;
+}else{
+cart.push({...currentProduct,qty:currentQty});
+}
+updateCartCount();
+closeModal();
+}
+
+function updateCartCount(){
+let total=cart.reduce((sum,item)=>sum+item.qty,0);
+document.getElementById("cartCount").innerText=total;
+}
+
+function openCart(){
+document.getElementById("cartModal").style.display="block";
+displayCart();
+}
+
+function closeCart(){
+document.getElementById("cartModal").style.display="none";
+}
+
+function displayCart(){
+let container=document.getElementById("cartItems");
+container.innerHTML="";
+let total=0;
+cart.forEach(item=>{
+total+=item.price*item.qty;
+container.innerHTML+=`
+<div class="cart-item">
+${item.name} x ${item.qty} = ₹${item.price*item.qty}
+</div>`;
+});
+document.getElementById("cartTotal").innerText="Total: ₹"+total;
+}
+
+function orderWhatsApp(){
+let message="Hello, I want to order:%0A";
+let total=0;
+cart.forEach(item=>{
+message+=`${item.name} x ${item.qty} = ₹${item.price*item.qty}%0A`;
+total+=item.price*item.qty;
+});
+message+=`Total: ₹${total}`;
+window.open(`https://wa.me/${whatsappNumber}?text=${message}`,"_blank");
+}
+
+function closeModal(){
+document.getElementById("productModal").style.display="none";
+}
+
+loadProducts();
+
 </script>
 
 </body>
