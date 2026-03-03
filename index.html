@@ -1,190 +1,290 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BabyTaby - Premium Baby Store</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:'Poppins',sans-serif;background:#f4f6fb;}
-header{position:relative;height:380px;overflow:hidden;}
-header img{width:100%;height:100%;object-fit:cover;filter:brightness(60%);}
-.banner-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;text-align:center;}
-.banner-text h1{font-size:2.5em;margin:0;}
-.banner-text p{font-size:1.2em;margin-top:10px;}
-.cart-icon{position:fixed;top:20px;right:20px;background:white;padding:10px 15px;border-radius:30px;box-shadow:0 5px 20px rgba(0,0,0,0.15);cursor:pointer;z-index:999;}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;padding:25px;}
-.card{background:white;border-radius:18px;padding:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.08);position:relative;transition:0.3s;cursor:pointer;}
-.card:hover{transform:translateY(-6px);}
-.card img{width:100%;border-radius:12px;transition:0.3s;}
-.card img:hover{transform:scale(1.05);}
-.badge{position:absolute;top:12px;left:12px;background:#ff9800;color:white;padding:5px 8px;font-size:0.7em;border-radius:6px;}
-.discount{position:absolute;top:12px;right:12px;background:#ff3b3b;color:white;padding:5px 8px;font-size:0.7em;border-radius:6px;font-weight:600;}
-.price{color:#e91e63;font-weight:700;font-size:1.1em;}
-.old-price{text-decoration:line-through;color:gray;font-size:0.9em;}
-.delivery{font-size:0.8em;color:green;}
-button{width:100%;padding:10px;margin-top:6px;border:none;border-radius:8px;font-weight:600;cursor:pointer;}
-.buy{background:#4caf50;color:white;}
-.cartbtn{background:#2196f3;color:white;}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;}
-.modal-content{background:white;width:95%;max-width:420px;border-radius:20px;padding:20px;text-align:center;position:relative;}
-.close{position:absolute;right:15px;top:10px;font-size:22px;cursor:pointer;}
-.slider{display:flex;align-items:center;justify-content:center;gap:10px;}
-.slider img{width:100%;border-radius:12px;max-height:300px;object-fit:cover;}
-.thumb-container{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
-.thumb-container img{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;}
-.thumb-container img.active{border:2px solid #e91e63;}
-.qty{display:flex;justify-content:center;align-items:center;gap:12px;margin:10px 0;}
-.qty button{width:35px;height:35px;}
-.cart-drawer{position:fixed;right:-100%;top:0;width:300px;height:100%;background:white;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:0.4s;padding:20px;overflow-y:auto;z-index:1000;}
-.cart-drawer.active{right:0;}
-footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-top:20px;}
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#fffafc;
+}
+
+/* HEADER */
+header{
+background:#fff;
+padding:15px;
+text-align:center;
+font-weight:700;
+font-size:22px;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* BANNER */
+.banner{
+position:relative;
+height:260px;
+overflow:hidden;
+}
+
+.banner img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.banner-text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+text-align:center;
+}
+
+.banner-text h1{
+margin:0;
+font-size:26px;
+}
+
+.banner-text p{
+margin-top:8px;
+font-size:14px;
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+padding:15px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+padding:10px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+position:relative;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.03);
+}
+
+.card img{
+width:100%;
+border-radius:12px;
+}
+
+.discount-badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#ff4d6d;
+color:white;
+padding:4px 8px;
+font-size:12px;
+border-radius:20px;
+font-weight:600;
+}
+
+.price-row{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:6px;
+}
+
+.old-price{
+text-decoration:line-through;
+color:gray;
+font-size:13px;
+}
+
+.new-price{
+color:#ff4d6d;
+font-weight:700;
+font-size:16px;
+}
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+padding:20px;
+}
+
+.popup-content{
+background:white;
+width:100%;
+max-width:420px;
+border-radius:20px;
+padding:20px;
+position:relative;
+max-height:90vh;
+overflow-y:auto;
+}
+
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:26px;
+cursor:pointer;
+font-weight:600;
+}
+
+.popup img{
+width:100%;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+.popup h2{
+margin:10px 0 5px 0;
+font-size:18px;
+}
+
+.popup p{
+font-size:14px;
+color:#555;
+}
+
+.btn{
+display:block;
+text-align:center;
+padding:12px;
+margin-top:10px;
+border-radius:25px;
+font-weight:600;
+text-decoration:none;
+}
+
+.buy{
+background:#ff4d6d;
+color:white;
+}
+
+.cart{
+background:#ffd6de;
+color:#ff4d6d;
+}
 </style>
 </head>
+
 <body>
 
-<div class="cart-icon" onclick="toggleCart()">🛒 (<span id="cartCount">0</span>)</div>
+<header>BabyTaby</header>
 
-<header>
+<div class="banner">
 <img src="images/banner.jpg">
 <div class="banner-text">
-<h1>BabyTaby</h1>
-<p>Premium Baby Essentials</p>
-</div>
-</header>
-
-<div class="products" id="productList"></div>
-
-<div class="modal" id="modal">
-<div class="modal-content">
-<span class="close" onclick="closeModal()">×</span>
-
-<div class="slider">
-<button onclick="prevImg()">◀</button>
-<img id="mainImg">
-<button onclick="nextImg()">▶</button>
-</div>
-
-<div class="thumb-container" id="thumbs"></div>
-
-<h3 id="modalName"></h3>
-<p id="modalPrice"></p>
-<p class="delivery">Delivery: 4–8 Days</p>
-<p>5 Days Return/Replacement</p>
-
-<div class="qty">
-<button onclick="changeQty(-1)">-</button>
-<span id="qty">1</span>
-<button onclick="changeQty(1)">+</button>
-</div>
-
-<button class="buy" onclick="buyNow()">Buy Now</button>
-<button class="cartbtn" onclick="addToCart()">Add to Cart</button>
-<button onclick="orderWhatsApp()">Order on WhatsApp</button>
-
+<h1>Premium Baby Safety Products</h1>
+<p>Safe • Comfortable • Trusted by Parents</p>
 </div>
 </div>
 
-<div class="cart-drawer" id="cartDrawer">
-<h3>Your Cart</h3>
-<div id="cartItems"></div>
-<h4>Total: ₹<span id="cartTotal">0</span></h4>
-</div>
+<div class="products" id="products"></div>
 
-<footer>© 2026 BabyTaby Store</footer>
+<div class="popup" id="popup">
+<div class="popup-content" id="popup-content">
+<span class="close" onclick="closePopup()">&times;</span>
+<div id="popup-data"></div>
+</div>
+</div>
 
 <script>
+
+var formLink="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog";
+
 var products=[
-{id:1,name:"Baby Head Protector",price:399,oldPrice:599,images:["images/product1_1.jpg","images/product1_2.jpg","images/product1_3.jpg","images/product1_4.jpg","images/product1_5.jpg"],best:true},
-{id:2,name:"Baby Knee Pads",price:249,oldPrice:299,images:["images/product2_1.jpg","images/product2_2.jpg","images/product2_3.jpg","images/product2_4.jpg","images/product2_5.jpg"],best:false},
-{id:3,name:"Baby Safety Pillow",price:349,oldPrice:399,images:["images/product3_1.jpg","images/product3_2.jpg","images/product3_3.jpg","images/product3_4.jpg","images/product3_5.jpg"],best:true}
+{
+name:"Baby Safety Head Protector Cushion Backpack",
+price:399,
+oldPrice:599,
+images:["images/product1_1.jpg"],
+desc:"Soft breathable head protector designed to prevent injury during baby falls. Lightweight and comfortable for daily crawling and walking practice."
+},
+{
+name:"Baby Anti Slip Knee Pads for Crawling Protection",
+price:249,
+oldPrice:299,
+images:["images/product2_1.jpg"],
+desc:"Stretchable and skin friendly knee pads that protect delicate baby knees. Perfect for indoor and outdoor crawling."
+},
+{
+name:"Baby Safety Pillow for Newborn Support",
+price:349,
+oldPrice:399,
+images:["images/product3_1.jpg"],
+desc:"Ergonomic soft pillow providing gentle head support for newborn babies. Made from premium cotton material for maximum comfort."
+}
 ];
 
-var selected,currentImg=0,quantity=1,cart=[];
-
-function discount(o,p){return Math.round(((o-p)/o)*100);}
-
 function loadProducts(){
-var box=document.getElementById("productList");
-box.innerHTML="";
-products.forEach(p=>{
-var d=discount(p.oldPrice,p.price);
-box.innerHTML+=`
-<div class="card" onclick="openModal(${p.id})">
-${p.best?'<div class="badge">Best Seller</div>':''}
-<div class="discount">-${d}%</div>
+var container=document.getElementById("products");
+container.innerHTML="";
+products.forEach(function(p,i){
+var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
+container.innerHTML+=`
+<div class="card" onclick="openPopup(${i})">
+<div class="discount-badge">${discount}% OFF</div>
 <img src="${p.images[0]}">
-<h4>${p.name}</h4>
-<p class="old-price">₹${p.oldPrice}</p>
-<p class="price">₹${p.price}</p>
-<p class="delivery">Delivery: 4–8 Days</p>
+<div class="price-row">
+<span class="old-price">₹${p.oldPrice}</span>
+<span class="new-price">₹${p.price}</span>
+</div>
 </div>`;
 });
 }
 
-function openModal(id){
-selected=products.find(p=>p.id===id);
-currentImg=0;quantity=1;
-document.getElementById("mainImg").src=selected.images[0];
-document.getElementById("modalName").innerText=selected.name;
-document.getElementById("modalPrice").innerHTML=`<span class="old-price">₹${selected.oldPrice}</span> <span class="price">₹${selected.price}</span>`;
-document.getElementById("qty").innerText=quantity;
-var thumbs="";
-selected.images.forEach((img,i)=>{
-thumbs+=`<img src="${img}" onclick="setImg(${i})" class="${i==0?'active':''}">`;
-});
-document.getElementById("thumbs").innerHTML=thumbs;
-document.getElementById("modal").style.display="flex";
+function openPopup(i){
+var p=products[i];
+var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
+document.getElementById("popup").style.display="flex";
+document.getElementById("popup-data").innerHTML=`
+<img src="${p.images[0]}">
+<h2>${p.name}</h2>
+
+<div class="price-row">
+<span class="old-price">₹${p.oldPrice}</span>
+<span class="new-price">₹${p.price}</span>
+<span style="color:#ff4d6d;font-weight:600;font-size:14px;">${discount}% OFF</span>
+</div>
+
+<p>${p.desc}</p>
+
+<a href="${formLink}" target="_blank" class="btn buy">Buy Now</a>
+<a href="${formLink}" target="_blank" class="btn cart">Add to Cart</a>
+`;
 }
 
-function updateThumbs(){
-var t=document.querySelectorAll("#thumbs img");
-t.forEach((img,i)=>img.classList.toggle("active",i===currentImg));
+function closePopup(){
+document.getElementById("popup").style.display="none";
 }
 
-function nextImg(){currentImg=(currentImg+1)%selected.images.length;updateImg();}
-function prevImg(){currentImg=(currentImg-1+selected.images.length)%selected.images.length;updateImg();}
-function setImg(i){currentImg=i;updateImg();}
-function updateImg(){
-document.getElementById("mainImg").src=selected.images[currentImg];
-updateThumbs();
+window.onclick=function(e){
+if(e.target==document.getElementById("popup")){
+closePopup();
 }
-
-function closeModal(){document.getElementById("modal").style.display="none";}
-function changeQty(v){quantity+=v;if(quantity<1)quantity=1;document.getElementById("qty").innerText=quantity;}
-
-function buyNow(){
-window.open("https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform","_blank");
-}
-
-function orderWhatsApp(){
-var msg=`I want to order ${selected.name} (Qty: ${quantity})`;
-window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
-}
-
-function addToCart(){
-cart.push({name:selected.name,price:selected.price,qty:quantity});
-updateCart();
-alert("Added to cart");
-}
-
-function updateCart(){
-var list=document.getElementById("cartItems");
-list.innerHTML="";
-var total=0;
-cart.forEach(item=>{
-total+=item.price*item.qty;
-list.innerHTML+=`<p>${item.name} x${item.qty} - ₹${item.price*item.qty}</p>`;
-});
-document.getElementById("cartTotal").innerText=total;
-document.getElementById("cartCount").innerText=cart.length;
-}
-
-function toggleCart(){
-document.getElementById("cartDrawer").classList.toggle("active");
 }
 
 loadProducts();
+
 </script>
 
 </body>
