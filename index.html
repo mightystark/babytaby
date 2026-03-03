@@ -1,81 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BabyTaby - Premium Baby Store</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BabyTaby</title>
 
 <style>
 body{
 margin:0;
-font-family:'Poppins',sans-serif;
-background:#fffafc;
-overflow-x:hidden;
+font-family:Arial, sans-serif;
+background:#f9f9f9;
 }
 
-/* HEADER */
-header{
-background:white;
-padding:15px;
-text-align:center;
-font-weight:700;
-font-size:22px;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.cart-icon{
-position:absolute;
-right:20px;
-top:15px;
-cursor:pointer;
-font-size:20px;
-}
-
-.cart-count{
-background:red;
-color:white;
-border-radius:50%;
-font-size:12px;
-padding:2px 6px;
-position:absolute;
-top:-8px;
-right:-10px;
-}
-
-/* BANNER */
+/* Banner */
 .banner{
-height:260px;
-overflow:hidden;
+position:relative;
+width:100%;
 }
 
 .banner img{
 width:100%;
-height:100%;
-object-fit:cover;
+display:block;
 }
 
-/* PRODUCTS */
+.banner-text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+font-size:28px;
+font-weight:bold;
+text-align:center;
+background:rgba(0,0,0,0.4);
+padding:10px 20px;
+border-radius:10px;
+}
+
+/* Product Grid */
 .products{
+display:grid;
+grid-template-columns:1fr;
+gap:15px;
 padding:15px;
 }
 
-.card{
+.product{
 background:white;
-border-radius:18px;
-padding:15px;
-margin-bottom:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+border-radius:10px;
+padding:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 cursor:pointer;
 }
 
-.card img{
+.product img{
 width:100%;
-height:220px;
-object-fit:cover;
-border-radius:15px;
+border-radius:10px;
 }
 
 .price-row{
@@ -85,74 +65,17 @@ align-items:center;
 margin-top:5px;
 }
 
-.old-price{
+.mrp{
 text-decoration:line-through;
 color:gray;
 }
 
-.new-price{
-color:#ff4d6d;
-font-weight:700;
-font-size:18px;
-}
-
 .discount{
-color:#ff4d6d;
-font-weight:600;
+color:green;
+font-weight:bold;
 }
 
-/* POPUP */
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:2000;
-padding:15px;
-}
-
-.popup-content{
-background:white;
-width:100%;
-max-width:420px;
-border-radius:20px;
-padding:20px;
-position:relative;
-max-height:90vh;
-overflow-y:auto;
-}
-
-.close{
-position:absolute;
-top:12px;
-right:18px;
-font-size:26px;
-cursor:pointer;
-}
-
-/* SWIPE SLIDER */
-.slider{
-display:flex;
-overflow-x:auto;
-scroll-snap-type:x mandatory;
-gap:10px;
-}
-
-.slider img{
-width:100%;
-height:300px;
-object-fit:cover;
-flex:0 0 100%;
-scroll-snap-align:start;
-border-radius:15px;
-}
-
-/* BUTTONS */
+/* Buttons */
 .btn{
 display:block;
 text-align:center;
@@ -167,121 +90,127 @@ font-size:15px;
 }
 
 .buy{
-background:#ff4d6d;
+background:#ff4d4d;
 color:white;
 }
 
 .cart-btn{
-background:#ffd6de;
-color:#ff4d6d;
+background:#007bff;
+color:white;
 }
 
-/* CART DRAWER */
-.cart-drawer{
+/* Popup */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+z-index:999;
+overflow:auto;
+display:none;
+padding:15px;
+}
+
+.popup img{
+width:100%;
+border-radius:10px;
+object-fit:contain;
+max-height:300px;
+}
+
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:24px;
+cursor:pointer;
+}
+
+/* Cart Drawer */
+.cart{
 position:fixed;
 right:-100%;
 top:0;
-width:85%;
-max-width:350px;
+width:100%;
 height:100%;
 background:white;
-box-shadow:-5px 0 20px rgba(0,0,0,0.2);
-z-index:3000;
-padding:20px;
+z-index:1000;
 transition:0.3s;
-overflow-y:auto;
+padding:15px;
+overflow:auto;
 }
 
-.cart-drawer.active{
+.cart.active{
 right:0;
 }
 
 .cart-item{
-border-bottom:1px solid #eee;
+border-bottom:1px solid #ddd;
 padding:10px 0;
 }
 
-.qty-btn{
-padding:2px 8px;
-margin:0 5px;
-cursor:pointer;
-}
-
-/* WHATSAPP FLOAT BUTTON */
-.whatsapp{
+.whatsapp-float{
 position:fixed;
 bottom:20px;
 right:20px;
 background:#25D366;
 color:white;
-padding:14px 18px;
+padding:12px 15px;
 border-radius:50px;
 text-decoration:none;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
-z-index:1500;
+font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-BabyTaby
-<div class="cart-icon" onclick="toggleCart()">
-🛒
-<span class="cart-count" id="cartCount">0</span>
-</div>
-</header>
-
+<!-- Banner -->
 <div class="banner">
 <img src="images/banner.jpg">
+<div class="banner-text">Premium Baby Care Products</div>
 </div>
 
-<div class="products" id="products"></div>
+<!-- Products -->
+<div class="products" id="productList"></div>
 
-<!-- PRODUCT POPUP -->
-<div class="popup" id="popup">
-<div class="popup-content">
-<span class="close" onclick="closePopup()">&times;</span>
-<div id="popupData"></div>
-</div>
-</div>
+<!-- Popup -->
+<div class="popup" id="popup"></div>
 
-<!-- CART DRAWER -->
-<div class="cart-drawer" id="cartDrawer">
-<div style="display:flex;justify-content:space-between;align-items:center;">
-<h2>Your Cart</h2>
-<span onclick="toggleCart()" style="font-size:22px;cursor:pointer;">✕</span>
-</div>
-
+<!-- Cart -->
+<div class="cart" id="cart">
+<h2>My Cart</h2>
 <div id="cartItems"></div>
-<h3>Total: ₹<span id="cartTotal">0</span></h3>
 
-<button onclick="checkoutCart()" class="btn buy">
-Order via WhatsApp
-</button>
+<button onclick="checkoutCart()" class="btn buy">Order via WhatsApp</button>
 
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog"
 target="_blank"
-class="btn cart-btn">
+class="btn cart-btn"
+style="margin-top:10px;">
 Order via Google Form
 </a>
 
+<button onclick="closeCart()" class="btn" style="background:gray;color:white;margin-top:15px;">
+Close Cart
+</button>
 </div>
 
-<a href="https://wa.me/918889446299" class="whatsapp" target="_blank">
-Chat on WhatsApp
-</a>
+<a href="#" onclick="openCart()" class="whatsapp-float">🛒 Cart</a>
 
 <script>
 
-var formLink="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog";
+const whatsappNumber = "918889446299";
+const formLink = "https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog";
 
-var products=[
+const products = [
+
 {
-name:"Baby Safety Head Protector Cushion Backpack",
-price:399,
-oldPrice:599,
+name:"Baby Head Protector",
+price:499,
+mrp:999,
 images:[
 "images/product1_1.jpg",
 "images/product1_2.jpg",
@@ -289,12 +218,13 @@ images:[
 "images/product1_4.jpg",
 "images/product1_5.jpg"
 ],
-desc:"Soft breathable head protector designed to prevent baby head injuries during falls. Lightweight and adjustable for daily crawling."
+description:"Protect your baby from head injuries during crawling and walking. Soft, breathable and lightweight design ensures safety and comfort."
 },
+
 {
-name:"Baby Anti Slip Knee Pads for Crawling Protection",
-price:249,
-oldPrice:299,
+name:"Baby Knee Pads",
+price:299,
+mrp:599,
 images:[
 "images/product2_1.jpg",
 "images/product2_2.jpg",
@@ -302,142 +232,122 @@ images:[
 "images/product2_4.jpg",
 "images/product2_5.jpg"
 ],
-desc:"Stretchable knee pads protecting delicate baby knees from bruises and friction."
+description:"Soft anti-slip knee pads protect baby's knees while crawling. Comfortable stretchable fabric for daily use."
+},
+
+{
+name:"Electric Baby Nail Trimmer",
+price:699,
+mrp:1299,
+images:[
+"images/product3_1.jpg",
+"images/product3_2.jpg",
+"images/product3_3.jpg",
+"images/product3_4.jpg",
+"images/product3_5.jpg"
+],
+description:"Safe and gentle electric nail trimmer designed specially for babies. Smooth trimming without hurting delicate fingers."
 }
+
 ];
 
-var cart=JSON.parse(localStorage.getItem("cart"))||[];
-
-function saveCart(){
-localStorage.setItem("cart",JSON.stringify(cart));
-updateCartUI();
-}
-
-function updateCartUI(){
-document.getElementById("cartCount").innerText=
-cart.reduce((a,b)=>a+b.qty,0);
-
-var itemsHTML="";
-var total=0;
-
-cart.forEach((item,index)=>{
-total+=item.price*item.qty;
-itemsHTML+=`
-<div class="cart-item">
-<b>${item.name}</b><br>
-₹${item.price} x 
-<button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
-${item.qty}
-<button class="qty-btn" onclick="changeQty(${index},1)">+</button>
-</div>`;
-});
-
-document.getElementById("cartItems").innerHTML=itemsHTML;
-document.getElementById("cartTotal").innerText=total;
-}
-
-function changeQty(index,change){
-cart[index].qty+=change;
-if(cart[index].qty<=0){cart.splice(index,1);}
-saveCart();
-}
-
-function addToCart(product){
-var found=cart.find(item=>item.name===product.name);
-if(found){found.qty++;}
-else{cart.push({...product,qty:1});}
-saveCart();
-}
-
-function toggleCart(){
-document.getElementById("cartDrawer").classList.toggle("active");
-}
-
-function checkoutCart(){
-if(cart.length===0){
-alert("Your cart is empty");
-return;
-}
-
-var message="Order Details:%0A";
-var total=0;
-
-cart.forEach(item=>{
-message+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"%0A";
-total+=item.price*item.qty;
-});
-
-message+="%0ATotal: ₹"+total;
-
-window.open("https://wa.me/918889446299?text="+message,"_blank");
-}
+let cart=[];
 
 function loadProducts(){
-var container=document.getElementById("products");
+let html="";
 products.forEach((p,i)=>{
-var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
-container.innerHTML+=`
-<div class="card" onclick="openPopup(${i})">
+let discount = Math.round(((p.mrp - p.price)/p.mrp)*100);
+html+=`
+<div class="product" onclick="openPopup(${i})">
 <img src="${p.images[0]}">
 <h3>${p.name}</h3>
 <div class="price-row">
-<span class="old-price">₹${p.oldPrice}</span>
-<span class="new-price">₹${p.price}</span>
+<span class="mrp">₹${p.mrp}</span>
+<span>₹${p.price}</span>
 <span class="discount">${discount}% OFF</span>
 </div>
-</div>`;
+</div>
+`;
 });
+document.getElementById("productList").innerHTML=html;
 }
 
 function openPopup(i){
-var p=products[i];
-var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
+let p=products[i];
+let discount = Math.round(((p.mrp - p.price)/p.mrp)*100);
 
-var imagesHTML="";
-p.images.forEach(img=>{
-imagesHTML+=`<img src="${img}">`;
-});
-
-document.getElementById("popup").style.display="flex";
-document.getElementById("popupData").innerHTML=`
-<div class="slider">${imagesHTML}</div>
+document.getElementById("popup").innerHTML=`
+<span class="close" onclick="closePopup()">✖</span>
+<img src="${p.images[0]}">
 <h2>${p.name}</h2>
 
 <div class="price-row">
-<span class="old-price">₹${p.oldPrice}</span>
-<span class="new-price">₹${p.price}</span>
+<span class="mrp">₹${p.mrp}</span>
+<span>₹${p.price}</span>
 <span class="discount">${discount}% OFF</span>
 </div>
 
-<p>${p.desc}</p>
+<p>${p.description}</p>
 
-<a href="${formLink}" target="_blank"
-class="btn buy"
+<a href="${formLink}" target="_blank" 
+class="btn buy" 
 style="padding:10px;font-size:14px;">
 Buy Now
 </a>
 
-<button onclick='addToCart(products[${i}])'
-class="btn cart-btn"
+<button onclick='addToCart(products[${i}])' 
+class="btn cart-btn" 
 style="padding:16px;font-size:16px;">
 Add to Cart
 </button>
 `;
+document.getElementById("popup").style.display="block";
 }
 
 function closePopup(){
 document.getElementById("popup").style.display="none";
 }
 
-window.onclick=function(e){
-if(e.target==document.getElementById("popup")){
-closePopup();
+function addToCart(product){
+cart.push(product);
+alert("Added to Cart");
 }
+
+function openCart(){
+document.getElementById("cart").classList.add("active");
+renderCart();
+}
+
+function closeCart(){
+document.getElementById("cart").classList.remove("active");
+}
+
+function renderCart(){
+let html="";
+cart.forEach(item=>{
+html+=`
+<div class="cart-item">
+<b>${item.name}</b><br>
+₹${item.price}
+</div>
+`;
+});
+document.getElementById("cartItems").innerHTML=html;
+}
+
+function checkoutCart(){
+if(cart.length===0){
+alert("Cart is empty");
+return;
+}
+let message="Order Details:%0A";
+cart.forEach(item=>{
+message+=item.name+" - ₹"+item.price+"%0A";
+});
+window.open("https://wa.me/"+whatsappNumber+"?text="+message);
 }
 
 loadProducts();
-updateCartUI();
-
 </script>
 
 </body>
