@@ -171,3 +171,250 @@ button{
       <button onclick="changeQty(-1)">-</button>
       <span id="quantity">1</span>
       <button onclick="changeQty(1)">+</button>
+    </div>
+    <button onclick="addToCart()">Add To Cart</button>
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCart()">X</span>
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="total" id="cartTotal"></div>
+    <button onclick="orderGoogleForm()">Place Order (Secure Form)</button>
+    <button style="background:green;" onclick="orderWhatsApp()">Quick Order on WhatsApp</button>
+  </div>
+</div>
+
+<script>
+
+var whatsappNumber = "918889446299";
+
+var products = [
+{
+id:1,
+name:"3-in-1 Baby Safety Protection Set",
+price:399,
+oldPrice:599,
+bestSeller:true,
+description:"Head protector + Back cushion + Knee pads. Protects from falls & crawling injuries.",
+images:[
+"https://via.placeholder.com/400x300?text=Protection+1",
+"https://via.placeholder.com/400x300?text=Protection+2",
+"https://via.placeholder.com/400x300?text=Protection+3",
+"https://via.placeholder.com/400x300?text=Protection+4",
+"https://via.placeholder.com/400x300?text=Protection+5"
+]
+},
+{
+id:2,
+name:"360° Spill-Proof Baby Feeding Bowl",
+price:249,
+oldPrice:299,
+bestSeller:true,
+description:"Rotating inner bowl stays upright. BPA free & spill-proof.",
+images:[
+"https://via.placeholder.com/400x300?text=Bowl+1",
+"https://via.placeholder.com/400x300?text=Bowl+2",
+"https://via.placeholder.com/400x300?text=Bowl+3",
+"https://via.placeholder.com/400x300?text=Bowl+4",
+"https://via.placeholder.com/400x300?text=Bowl+5"
+]
+},
+{
+id:3,
+name:"Electric Baby Nail Trimmer Set",
+price:349,
+oldPrice:399,
+bestSeller:false,
+description:"Safe electric nail file with LED light.",
+images:[
+"https://via.placeholder.com/400x300?text=Trimmer+1",
+"https://via.placeholder.com/400x300?text=Trimmer+2",
+"https://via.placeholder.com/400x300?text=Trimmer+3",
+"https://via.placeholder.com/400x300?text=Trimmer+4",
+"https://via.placeholder.com/400x300?text=Trimmer+5"
+]
+}
+];
+
+var cart = [];
+var currentProduct;
+var currentQty = 1;
+var currentImageIndex = 0;
+
+function loadProducts(){
+var container = document.getElementById("productList");
+container.innerHTML = "";
+
+for(var i=0;i<products.length;i++){
+var p = products[i];
+var badge = "";
+if(p.bestSeller){
+badge = '<div class="badge">Best Seller</div>';
+}
+
+container.innerHTML +=
+'<div class="card" onclick="openModal('+p.id+')">'+
+badge+
+'<img src="'+p.images[0]+'">'+
+'<h4>'+p.name+'</h4>'+
+'<p class="old-price">₹'+p.oldPrice+'</p>'+
+'<p class="price">₹'+p.price+'</p>'+
+'</div>';
+}
+}
+
+function openModal(id){
+for(var i=0;i<products.length;i++){
+if(products[i].id === id){
+currentProduct = products[i];
+}
+}
+currentQty = 1;
+currentImageIndex = 0;
+document.getElementById("productModal").style.display = "block";
+updateModal();
+}
+
+function updateModal(){
+document.getElementById("slider").innerHTML =
+'<img src="'+currentProduct.images[currentImageIndex]+'">'+
+'<div style="text-align:center;margin-top:5px;">'+
+'<button onclick="prevImage()">◀</button>'+
+'<button onclick="nextImage()">▶</button>'+
+'</div>';
+
+document.getElementById("modalName").innerText = currentProduct.name;
+document.getElementById("modalDesc").innerText = currentProduct.description;
+document.getElementById("modalOldPrice").innerText = "₹"+currentProduct.oldPrice;
+document.getElementById("modalPrice").innerText = " ₹"+currentProduct.price;
+document.getElementById("quantity").innerText = currentQty;
+}
+
+function prevImage(){
+currentImageIndex--;
+if(currentImageIndex < 0){
+currentImageIndex = currentProduct.images.length - 1;
+}
+updateModal();
+}
+
+function nextImage(){
+currentImageIndex++;
+if(currentImageIndex >= currentProduct.images.length){
+currentImageIndex = 0;
+}
+updateModal();
+}
+
+function changeQty(v){
+currentQty += v;
+if(currentQty < 1) currentQty = 1;
+document.getElementById("quantity").innerText = currentQty;
+}
+
+function addToCart(){
+var found = false;
+for(var i=0;i<cart.length;i++){
+if(cart[i].id === currentProduct.id){
+cart[i].qty += currentQty;
+found = true;
+}
+}
+if(!found){
+cart.push({id:currentProduct.id,name:currentProduct.name,price:currentProduct.price,qty:currentQty});
+}
+updateCartCount();
+closeModal();
+}
+
+function updateCartCount(){
+var total = 0;
+for(var i=0;i<cart.length;i++){
+total += cart[i].qty;
+}
+document.getElementById("cartCount").innerText = total;
+}
+
+function openCart(){
+document.getElementById("cartModal").style.display = "block";
+displayCart();
+}
+
+function closeCart(){
+document.getElementById("cartModal").style.display = "none";
+}
+
+function displayCart(){
+var container = document.getElementById("cartItems");
+container.innerHTML = "";
+var total = 0;
+
+for(var i=0;i<cart.length;i++){
+var item = cart[i];
+total += item.price * item.qty;
+container.innerHTML +=
+'<div class="cart-item">'+
+item.name+' x '+item.qty+' = ₹'+(item.price*item.qty)+
+'</div>';
+}
+
+document.getElementById("cartTotal").innerText = "Total: ₹"+total;
+}
+
+function orderGoogleForm(){
+if(cart.length === 0){
+alert("Your cart is empty!");
+return;
+}
+
+var orderSummary = "";
+var total = 0;
+
+for(var i=0;i<cart.length;i++){
+var item = cart[i];
+orderSummary += item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"\n";
+total += item.price*item.qty;
+}
+
+var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/formResponse?";
+formURL += "entry.166477120=" + encodeURIComponent(orderSummary);
+formURL += "&entry.178886703=" + encodeURIComponent("₹"+total);
+formURL += "&entry.509043788=" + encodeURIComponent("Cash on Delivery");
+
+window.open(formURL,"_blank");
+}
+
+function orderWhatsApp(){
+if(cart.length === 0){
+alert("Your cart is empty!");
+return;
+}
+
+var message = "Hello, I want to order:%0A";
+var total = 0;
+
+for(var i=0;i<cart.length;i++){
+var item = cart[i];
+message += item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"%0A";
+total += item.price*item.qty;
+}
+
+message += "Total: ₹"+total;
+
+window.open("https://wa.me/"+whatsappNumber+"?text="+message,"_blank");
+}
+
+function closeModal(){
+document.getElementById("productModal").style.display = "none";
+}
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
