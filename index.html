@@ -400,7 +400,7 @@ function updateCartCount(){ var total=0; for(var i=0;i<cart.length;i++){ total+=
 function openCart(){ document.getElementById("cartModal").style.display="block"; displayCart(); }
 function closeCart(){ document.getElementById("cartModal").style.display="none"; }
 function displayCart(){ var container=document.getElementById("cartItems"); container.innerHTML=""; var total=0; for(var i=0;i<cart.length;i++){ var item=cart[i]; total+=item.price*item.qty; container.innerHTML+='<div class="cart-item">'+item.name+' x '+item.qty+' = ₹'+(item.price*item.qty)+'</div>'; } document.getElementById("cartTotal").innerText="Total: ₹"+total; }
-function orderGoogleForm(){ if(cart.length===0){ alert("Your cart is empty!"); return; } var orderSummary=""; var total=0; for(var i=0;i<cart.length;i++){ var item=cart[i]; orderSummary+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"\n"; total+=item.price*item.qty; } var formURL="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9QjM48Q/formResponse?"; formURL+="entry.166477120="+encodeURIComponent(orderSummary); formURL+="&entry.178886703="+encodeURIComponent("₹"+total); formURL+="&entry.509043788="+encodeURIComponent("Cash on Delivery"); window.open(formURL,"_blank"); }
+function orderGoogleForm(){ if(cart.length===0){ alert("Your cart is empty!"); return; } var orderSummary=""; var total=0; for(var i=0;i<cart.length;i++){ var item=cart[i]; orderSummary+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"\n"; total+=item.price*item.qty; } var formURL="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog"; }
 function orderWhatsApp(){ if(cart.length===0){ alert("Your cart is empty!"); return; } var message="Hello, I want to order:%0A"; var total=0; for(var i=0;i<cart.length;i++){ var item=cart[i]; message+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"%0A"; total+=item.price*item.qty; } message+="Total: ₹"+total; window.open("https://wa.me/"+whatsappNumber+"?text="+message,"_blank"); }
 function closeModal(){ document.getElementById("productModal").style.display="none"; }
 
@@ -409,3 +409,4 @@ loadProducts();
 
 </body>
 </html>
+
