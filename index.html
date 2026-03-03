@@ -5,81 +5,151 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babytaby Store</title>
 
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
 <style>
+/* GLOBAL */
 body{
-  font-family: Arial;
+  font-family: 'Nunito', sans-serif;
   margin:0;
-  background:#f8f8f8;
+  background:#fefefe;
+  color:#333;
 }
 
+/* HEADER */
 header{
-  background:#ff6b81;
+  background:#ff758f;
   color:white;
-  padding:15px;
+  padding:15px 20px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   font-weight:bold;
+  font-family: 'Poppins', sans-serif;
+  font-size:1.2em;
 }
 
 .cart-icon{
   cursor:pointer;
 }
 
+/* BANNER */
 .banner{
-  background:#ffe9ec;
-  padding:20px;
+  position:relative;
+  height:250px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   text-align:center;
+  color:white;
+  overflow:hidden;
 }
 
-.banner h2{
-  margin:0;
-  color:#ff6b81;
+.banner img{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
 }
 
+.banner-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(255, 117, 143,0.4);
+  z-index:1;
+}
+
+.banner-content{
+  position:relative;
+  z-index:2;
+}
+
+.banner h1{
+  font-family: 'Poppins', sans-serif;
+  font-size:2em;
+  margin:0 0 10px 0;
+}
+
+.banner p{
+  margin:2px 0;
+  font-weight:600;
+}
+
+/* PRODUCTS GRID */
 .products{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:15px;
-  padding:15px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+  padding:20px;
 }
 
+/* PRODUCT CARD */
 .card{
   background:white;
-  padding:10px;
-  border-radius:10px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-  position:relative;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
   cursor:pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position:relative;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
 .card img{
   width:100%;
-  border-radius:8px;
+  display:block;
+  border-bottom:1px solid #eee;
 }
 
+.card h4{
+  margin:10px;
+  font-weight:600;
+  font-size:1em;
+}
+
+.card p{
+  margin:5px 10px;
+  font-size:0.9em;
+}
+
+/* PRICE & BADGE */
 .price{
-  color:#ff6b81;
+  color:#ff758f;
   font-weight:bold;
+  margin-left:10px;
 }
 
 .old-price{
   text-decoration:line-through;
-  color:gray;
-  font-size:14px;
+  color:#999;
+  font-size:0.85em;
+  margin-left:10px;
 }
 
 .badge{
   position:absolute;
-  top:8px;
-  left:8px;
-  background:gold;
-  padding:4px 8px;
-  font-size:12px;
+  top:10px;
+  left:10px;
+  background:#ffd700;
+  color:#333;
+  padding:5px 8px;
+  font-size:0.75em;
   font-weight:bold;
   border-radius:5px;
 }
 
+/* MODALS */
 .modal{
   display:none;
   position:fixed;
@@ -89,15 +159,17 @@ header{
   height:100%;
   background:rgba(0,0,0,0.6);
   overflow:auto;
+  z-index:100;
 }
 
 .modal-content{
   background:white;
   width:90%;
-  max-width:400px;
+  max-width:450px;
   margin:40px auto;
-  padding:15px;
-  border-radius:10px;
+  padding:20px;
+  border-radius:15px;
+  position:relative;
 }
 
 .slider img{
@@ -108,35 +180,46 @@ header{
 .qty{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:15px;
   margin:10px 0;
 }
 
 button{
-  background:#ff6b81;
+  background:linear-gradient(90deg,#ff758f,#ffb6c1);
   color:white;
   border:none;
-  padding:10px;
+  padding:12px;
   width:100%;
-  border-radius:8px;
+  border-radius:12px;
   cursor:pointer;
-  margin-top:5px;
+  margin-top:10px;
+  font-weight:bold;
+  font-size:1em;
+  transition: opacity 0.2s;
+}
+
+button:hover{
+  opacity:0.9;
 }
 
 .close{
-  float:right;
+  position:absolute;
+  top:15px;
+  right:15px;
   cursor:pointer;
   font-weight:bold;
+  font-size:1.2em;
 }
 
 .cart-item{
   border-bottom:1px solid #ddd;
-  padding:8px 0;
+  padding:10px 0;
 }
 
 .total{
   font-weight:bold;
   margin-top:10px;
+  font-size:1.1em;
 }
 </style>
 </head>
@@ -149,9 +232,13 @@ button{
 </header>
 
 <div class="banner">
-  <h2>Cute essentials for your cute baby</h2>
-  <p>Sale is live. Free shipping always</p>
-  <p>Cash on Delivery Available</p>
+  <img src="https://images.unsplash.com/photo-1598287845361-2e62fc3b96b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFieXxlbnwwfHwwfHw%3D&ixlib=rb-4.0.3&q=80&w=1080" alt="Baby Banner">
+  <div class="banner-overlay"></div>
+  <div class="banner-content">
+    <h1>Babytaby</h1>
+    <p>Cute essentials for your cute baby</p>
+    <p>Sale is live. Free shipping always</p>
+  </div>
 </div>
 
 <div class="products" id="productList"></div>
@@ -184,12 +271,11 @@ button{
     <div id="cartItems"></div>
     <div class="total" id="cartTotal"></div>
     <button onclick="orderGoogleForm()">Place Order (Secure Form)</button>
-    <button style="background:green;" onclick="orderWhatsApp()">Quick Order on WhatsApp</button>
+    <button style="background:linear-gradient(90deg,#32cd32,#7cfc00);" onclick="orderWhatsApp()">Quick Order on WhatsApp</button>
   </div>
 </div>
 
 <script>
-
 var whatsappNumber = "918889446299";
 
 var products = [
@@ -248,14 +334,10 @@ var currentImageIndex = 0;
 function loadProducts(){
 var container = document.getElementById("productList");
 container.innerHTML = "";
-
 for(var i=0;i<products.length;i++){
 var p = products[i];
 var badge = "";
-if(p.bestSeller){
-badge = '<div class="badge">Best Seller</div>';
-}
-
+if(p.bestSeller){ badge = '<div class="badge">Best Seller</div>'; }
 container.innerHTML +=
 '<div class="card" onclick="openModal('+p.id+')">'+
 badge+
@@ -269,12 +351,9 @@ badge+
 
 function openModal(id){
 for(var i=0;i<products.length;i++){
-if(products[i].id === id){
-currentProduct = products[i];
+if(products[i].id === id){ currentProduct = products[i]; }
 }
-}
-currentQty = 1;
-currentImageIndex = 0;
+currentQty = 1; currentImageIndex = 0;
 document.getElementById("productModal").style.display = "block";
 updateModal();
 }
@@ -286,7 +365,6 @@ document.getElementById("slider").innerHTML =
 '<button onclick="prevImage()">◀</button>'+
 '<button onclick="nextImage()">▶</button>'+
 '</div>';
-
 document.getElementById("modalName").innerText = currentProduct.name;
 document.getElementById("modalDesc").innerText = currentProduct.description;
 document.getElementById("modalOldPrice").innerText = "₹"+currentProduct.oldPrice;
@@ -294,123 +372,49 @@ document.getElementById("modalPrice").innerText = " ₹"+currentProduct.price;
 document.getElementById("quantity").innerText = currentQty;
 }
 
-function prevImage(){
-currentImageIndex--;
-if(currentImageIndex < 0){
-currentImageIndex = currentProduct.images.length - 1;
-}
-updateModal();
-}
+function prevImage(){ currentImageIndex--; if(currentImageIndex<0) currentImageIndex=currentProduct.images.length-1; updateModal(); }
+function nextImage(){ currentImageIndex++; if(currentImageIndex>=currentProduct.images.length) currentImageIndex=0; updateModal(); }
 
-function nextImage(){
-currentImageIndex++;
-if(currentImageIndex >= currentProduct.images.length){
-currentImageIndex = 0;
-}
-updateModal();
-}
-
-function changeQty(v){
-currentQty += v;
-if(currentQty < 1) currentQty = 1;
-document.getElementById("quantity").innerText = currentQty;
-}
+function changeQty(v){ currentQty+=v; if(currentQty<1)currentQty=1; document.getElementById("quantity").innerText=currentQty; }
 
 function addToCart(){
-var found = false;
-for(var i=0;i<cart.length;i++){
-if(cart[i].id === currentProduct.id){
-cart[i].qty += currentQty;
-found = true;
-}
-}
-if(!found){
-cart.push({id:currentProduct.id,name:currentProduct.name,price:currentProduct.price,qty:currentQty});
-}
-updateCartCount();
-closeModal();
+var found=false;
+for(var i=0;i<cart.length;i++){ if(cart[i].id===currentProduct.id){ cart[i].qty+=currentQty; found=true; } }
+if(!found){ cart.push({id:currentProduct.id,name:currentProduct.name,price:currentProduct.price,qty:currentQty}); }
+updateCartCount(); closeModal();
 }
 
-function updateCartCount(){
-var total = 0;
-for(var i=0;i<cart.length;i++){
-total += cart[i].qty;
-}
-document.getElementById("cartCount").innerText = total;
-}
+function updateCartCount(){ var total=0; for(var i=0;i<cart.length;i++){ total+=cart[i].qty; } document.getElementById("cartCount").innerText=total; }
 
-function openCart(){
-document.getElementById("cartModal").style.display = "block";
-displayCart();
-}
-
-function closeCart(){
-document.getElementById("cartModal").style.display = "none";
-}
+function openCart(){ document.getElementById("cartModal").style.display="block"; displayCart(); }
+function closeCart(){ document.getElementById("cartModal").style.display="none"; }
 
 function displayCart(){
-var container = document.getElementById("cartItems");
-container.innerHTML = "";
-var total = 0;
-
-for(var i=0;i<cart.length;i++){
-var item = cart[i];
-total += item.price * item.qty;
-container.innerHTML +=
-'<div class="cart-item">'+
-item.name+' x '+item.qty+' = ₹'+(item.price*item.qty)+
-'</div>';
-}
-
-document.getElementById("cartTotal").innerText = "Total: ₹"+total;
+var container=document.getElementById("cartItems"); container.innerHTML=""; var total=0;
+for(var i=0;i<cart.length;i++){ var item=cart[i]; total+=item.price*item.qty; container.innerHTML+='<div class="cart-item">'+item.name+' x '+item.qty+' = ₹'+(item.price*item.qty)+'</div>'; }
+document.getElementById("cartTotal").innerText="Total: ₹"+total;
 }
 
 function orderGoogleForm(){
-if(cart.length === 0){
-alert("Your cart is empty!");
-return;
-}
-
-var orderSummary = "";
-var total = 0;
-
-for(var i=0;i<cart.length;i++){
-var item = cart[i];
-orderSummary += item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"\n";
-total += item.price*item.qty;
-}
-
-var formURL = "https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/formResponse?";
-formURL += "entry.166477120=" + encodeURIComponent(orderSummary);
-formURL += "&entry.178886703=" + encodeURIComponent("₹"+total);
-formURL += "&entry.509043788=" + encodeURIComponent("Cash on Delivery");
-
+if(cart.length===0){ alert("Your cart is empty!"); return; }
+var orderSummary=""; var total=0;
+for(var i=0;i<cart.length;i++){ var item=cart[i]; orderSummary+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"\n"; total+=item.price*item.qty; }
+var formURL="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/formResponse?";
+formURL+="entry.166477120="+encodeURIComponent(orderSummary);
+formURL+="&entry.178886703="+encodeURIComponent("₹"+total);
+formURL+="&entry.509043788="+encodeURIComponent("Cash on Delivery");
 window.open(formURL,"_blank");
 }
 
 function orderWhatsApp(){
-if(cart.length === 0){
-alert("Your cart is empty!");
-return;
-}
-
-var message = "Hello, I want to order:%0A";
-var total = 0;
-
-for(var i=0;i<cart.length;i++){
-var item = cart[i];
-message += item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"%0A";
-total += item.price*item.qty;
-}
-
-message += "Total: ₹"+total;
-
+if(cart.length===0){ alert("Your cart is empty!"); return; }
+var message="Hello, I want to order:%0A"; var total=0;
+for(var i=0;i<cart.length;i++){ var item=cart[i]; message+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+"%0A"; total+=item.price*item.qty; }
+message+="Total: ₹"+total;
 window.open("https://wa.me/"+whatsappNumber+"?text="+message,"_blank");
 }
 
-function closeModal(){
-document.getElementById("productModal").style.display = "none";
-}
+function closeModal(){ document.getElementById("productModal").style.display="none"; }
 
 loadProducts();
 
