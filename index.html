@@ -3,7 +3,6 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BabyTaby - Premium Baby Store</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -11,6 +10,7 @@ body{
 margin:0;
 font-family:'Poppins',sans-serif;
 background:#fffafc;
+overflow-x:hidden;
 }
 
 /* HEADER */
@@ -23,12 +23,30 @@ font-size:22px;
 box-shadow:0 2px 10px rgba(0,0,0,0.05);
 position:sticky;
 top:0;
-z-index:100;
+z-index:1000;
+}
+
+.cart-icon{
+position:absolute;
+right:20px;
+top:15px;
+cursor:pointer;
+font-size:20px;
+}
+
+.cart-count{
+background:red;
+color:white;
+border-radius:50%;
+font-size:12px;
+padding:2px 6px;
+position:absolute;
+top:-8px;
+right:-10px;
 }
 
 /* BANNER */
 .banner{
-position:relative;
 height:260px;
 overflow:hidden;
 }
@@ -39,21 +57,7 @@ height:100%;
 object-fit:cover;
 }
 
-.banner-text{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-color:white;
-text-align:center;
-}
-
-.banner-text h1{
-margin:0;
-font-size:26px;
-}
-
-/* PRODUCTS FULL WIDTH */
+/* PRODUCTS */
 .products{
 padding:15px;
 }
@@ -65,11 +69,6 @@ padding:15px;
 margin-bottom:20px;
 box-shadow:0 5px 20px rgba(0,0,0,0.08);
 cursor:pointer;
-transition:0.3s;
-}
-
-.card:hover{
-transform:scale(1.02);
 }
 
 .card img{
@@ -77,33 +76,27 @@ width:100%;
 border-radius:15px;
 }
 
-.discount-badge{
-background:#ff4d6d;
-color:white;
-padding:5px 10px;
-border-radius:20px;
-font-size:13px;
-display:inline-block;
-margin-top:10px;
-}
-
 .price-row{
 display:flex;
-align-items:center;
 gap:10px;
-margin-top:6px;
+align-items:center;
+margin-top:5px;
 }
 
 .old-price{
 text-decoration:line-through;
 color:gray;
-font-size:14px;
 }
 
 .new-price{
 color:#ff4d6d;
 font-weight:700;
 font-size:18px;
+}
+
+.discount{
+color:#ff4d6d;
+font-weight:600;
 }
 
 /* POPUP */
@@ -117,7 +110,7 @@ background:rgba(0,0,0,0.6);
 display:none;
 justify-content:center;
 align-items:center;
-z-index:999;
+z-index:2000;
 padding:15px;
 }
 
@@ -136,10 +129,26 @@ overflow-y:auto;
 position:absolute;
 top:12px;
 right:18px;
-font-size:28px;
+font-size:26px;
 cursor:pointer;
 }
 
+/* SWIPE SLIDER */
+.slider{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+gap:10px;
+}
+
+.slider img{
+width:100%;
+flex:0 0 100%;
+scroll-snap-align:start;
+border-radius:15px;
+}
+
+/* BUTTONS */
 .btn{
 display:block;
 text-align:center;
@@ -148,6 +157,8 @@ margin-top:10px;
 border-radius:30px;
 font-weight:600;
 text-decoration:none;
+border:none;
+cursor:pointer;
 }
 
 .buy{
@@ -160,12 +171,34 @@ background:#ffd6de;
 color:#ff4d6d;
 }
 
-/* CART ICON */
-.cart-icon{
+/* CART DRAWER */
+.cart-drawer{
 position:fixed;
-top:18px;
-right:20px;
-font-size:20px;
+right:-100%;
+top:0;
+width:85%;
+max-width:350px;
+height:100%;
+background:white;
+box-shadow:-5px 0 20px rgba(0,0,0,0.2);
+z-index:3000;
+padding:20px;
+transition:0.3s;
+overflow-y:auto;
+}
+
+.cart-drawer.active{
+right:0;
+}
+
+.cart-item{
+border-bottom:1px solid #eee;
+padding:10px 0;
+}
+
+.qty-btn{
+padding:2px 8px;
+margin:0 5px;
 cursor:pointer;
 }
 
@@ -178,9 +211,9 @@ background:#25D366;
 color:white;
 padding:14px 18px;
 border-radius:50px;
-font-size:14px;
 text-decoration:none;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
+z-index:1500;
 }
 </style>
 </head>
@@ -189,69 +222,129 @@ box-shadow:0 4px 10px rgba(0,0,0,0.2);
 
 <header>
 BabyTaby
-<span class="cart-icon" onclick="alert('Cart Items: '+cart.length)">🛒</span>
+<div class="cart-icon" onclick="toggleCart()">
+🛒
+<span class="cart-count" id="cartCount">0</span>
+</div>
 </header>
 
 <div class="banner">
 <img src="images/banner.jpg">
-<div class="banner-text">
-<h1>Premium Baby Safety Collection</h1>
-</div>
 </div>
 
 <div class="products" id="products"></div>
 
+<!-- PRODUCT POPUP -->
 <div class="popup" id="popup">
 <div class="popup-content">
 <span class="close" onclick="closePopup()">&times;</span>
-<div id="popup-data"></div>
+<div id="popupData"></div>
 </div>
 </div>
 
-<a href="https://wa.me/91XXXXXXXXXX" class="whatsapp" target="_blank">Chat on WhatsApp</a>
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<h3>Total: ₹<span id="cartTotal">0</span></h3>
+</div>
+
+<a href="https://wa.me/918889446299" class="whatsapp" target="_blank">
+Chat on WhatsApp
+</a>
 
 <script>
 
 var formLink="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog";
-
-var cart=[];
 
 var products=[
 {
 name:"Baby Safety Head Protector Cushion Backpack",
 price:399,
 oldPrice:599,
-image:"images/product1_1.jpg",
-desc:"Soft breathable head protector designed to prevent baby head injuries during falls. Lightweight, adjustable and comfortable for daily crawling and walking practice."
+images:[
+"images/product1_1.jpg",
+"images/product1_2.jpg",
+"images/product1_3.jpg",
+"images/product1_4.jpg",
+"images/product1_5.jpg"
+],
+desc:"Soft breathable head protector designed to prevent baby head injuries during falls. Lightweight and adjustable for daily crawling."
 },
 {
 name:"Baby Anti Slip Knee Pads for Crawling Protection",
 price:249,
 oldPrice:299,
-image:"images/product2_1.jpg",
-desc:"Stretchable knee pads that protect delicate baby knees from friction and bruises. Ideal for indoor and outdoor crawling."
-},
-{
-name:"Baby Safety Pillow for Newborn Head Support",
-price:349,
-oldPrice:399,
-image:"images/product3_1.jpg",
-desc:"Ergonomic soft pillow providing gentle support for newborn babies. Made from premium cotton material for maximum comfort and safety."
+images:[
+"images/product2_1.jpg",
+"images/product2_2.jpg",
+"images/product2_3.jpg",
+"images/product2_4.jpg",
+"images/product2_5.jpg"
+],
+desc:"Stretchable knee pads protecting delicate baby knees from bruises and friction."
 }
 ];
 
+var cart=JSON.parse(localStorage.getItem("cart"))||[];
+
+function saveCart(){
+localStorage.setItem("cart",JSON.stringify(cart));
+updateCartUI();
+}
+
+function updateCartUI(){
+document.getElementById("cartCount").innerText=cart.reduce((a,b)=>a+b.qty,0);
+
+var itemsHTML="";
+var total=0;
+
+cart.forEach((item,index)=>{
+total+=item.price*item.qty;
+itemsHTML+=`
+<div class="cart-item">
+<b>${item.name}</b><br>
+₹${item.price} x 
+<button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
+${item.qty}
+<button class="qty-btn" onclick="changeQty(${index},1)">+</button>
+</div>
+`;
+});
+
+document.getElementById("cartItems").innerHTML=itemsHTML;
+document.getElementById("cartTotal").innerText=total;
+}
+
+function changeQty(index,change){
+cart[index].qty+=change;
+if(cart[index].qty<=0){cart.splice(index,1);}
+saveCart();
+}
+
+function addToCart(product){
+var found=cart.find(item=>item.name===product.name);
+if(found){found.qty++;}
+else{cart.push({...product,qty:1});}
+saveCart();
+}
+
+function toggleCart(){
+document.getElementById("cartDrawer").classList.toggle("active");
+}
+
 function loadProducts(){
 var container=document.getElementById("products");
-products.forEach(function(p,i){
+products.forEach((p,i)=>{
 var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
 container.innerHTML+=`
 <div class="card" onclick="openPopup(${i})">
-<img src="${p.image}">
-<div class="discount-badge">${discount}% OFF</div>
+<img src="${p.images[0]}">
 <h3>${p.name}</h3>
 <div class="price-row">
 <span class="old-price">₹${p.oldPrice}</span>
 <span class="new-price">₹${p.price}</span>
+<span class="discount">${discount}% OFF</span>
 </div>
 </div>`;
 });
@@ -260,27 +353,28 @@ container.innerHTML+=`
 function openPopup(i){
 var p=products[i];
 var discount=Math.round(((p.oldPrice-p.price)/p.oldPrice)*100);
+
+var imagesHTML="";
+p.images.forEach(img=>{
+imagesHTML+=`<img src="${img}">`;
+});
+
 document.getElementById("popup").style.display="flex";
-document.getElementById("popup-data").innerHTML=`
-<img src="${p.image}" style="width:100%;border-radius:15px;">
+document.getElementById("popupData").innerHTML=`
+<div class="slider">${imagesHTML}</div>
 <h2>${p.name}</h2>
 
 <div class="price-row">
 <span class="old-price">₹${p.oldPrice}</span>
 <span class="new-price">₹${p.price}</span>
-<span style="color:#ff4d6d;font-weight:600;">${discount}% OFF</span>
+<span class="discount">${discount}% OFF</span>
 </div>
 
 <p>${p.desc}</p>
 
 <a href="${formLink}" target="_blank" class="btn buy">Buy Now</a>
-<button onclick="addToCart('${p.name}')" class="btn cart-btn">Add to Cart</button>
+<button onclick='addToCart(products[${i}])' class="btn cart-btn">Add to Cart</button>
 `;
-}
-
-function addToCart(name){
-cart.push(name);
-alert(name+" added to cart");
 }
 
 function closePopup(){
@@ -294,6 +388,7 @@ closePopup();
 }
 
 loadProducts();
+updateCartUI();
 
 </script>
 
