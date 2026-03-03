@@ -25,7 +25,12 @@ position:sticky;
 top:0;
 z-index:1000;
 }
-
+.return-policy{
+font-size:13px;
+color:#28a745;
+margin-top:6px;
+font-weight:500;
+}
 .cart-icon{
 position:absolute;
 right:20px;
@@ -427,11 +432,17 @@ container.innerHTML+=`
 <div class="card" onclick="openPopup(${i})">
 <img src="${p.images[0]}">
 <h3>${p.name}</h3>
+
 <div class="price-row">
 <span class="old-price">₹${p.oldPrice}</span>
 <span class="new-price">₹${p.price}</span>
 <span class="discount">${discount}% OFF</span>
 </div>
+
+<div class="return-policy">
+5 Days Easy Return / Replacement
+</div>
+
 </div>`;
 });
 }
@@ -493,6 +504,7 @@ updateCartUI();
 
 </body>
 </html>
+
 
 
 
