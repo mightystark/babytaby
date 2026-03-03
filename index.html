@@ -12,18 +12,17 @@ header img{width:100%;height:100%;object-fit:cover;filter:brightness(60%);}
 .banner-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;text-align:center;}
 .banner-text h1{font-size:2.5em;margin:0;}
 .banner-text p{font-size:1.2em;margin-top:10px;}
-.cart-icon{position:fixed;top:20px;right:20px;background:white;padding:10px 15px;border-radius:30px;box-shadow:0 5px 20px rgba(0,0,0,0.15);cursor:pointer;}
+.cart-icon{position:fixed;top:20px;right:20px;background:white;padding:10px 15px;border-radius:30px;box-shadow:0 5px 20px rgba(0,0,0,0.15);cursor:pointer;z-index:999;}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;padding:25px;}
-.card{background:white;border-radius:18px;padding:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.08);position:relative;transition:0.3s;}
+.card{background:white;border-radius:18px;padding:15px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,0.08);position:relative;transition:0.3s;cursor:pointer;}
 .card:hover{transform:translateY(-6px);}
 .card img{width:100%;border-radius:12px;transition:0.3s;}
-.card img:hover{transform:scale(1.07);}
+.card img:hover{transform:scale(1.05);}
 .badge{position:absolute;top:12px;left:12px;background:#ff9800;color:white;padding:5px 8px;font-size:0.7em;border-radius:6px;}
-.discount{position:absolute;top:12px;right:12px;background:#ff3b3b;color:white;padding:5px 8px;font-size:0.7em;border-radius:6px;}
+.discount{position:absolute;top:12px;right:12px;background:#ff3b3b;color:white;padding:5px 8px;font-size:0.7em;border-radius:6px;font-weight:600;}
 .price{color:#e91e63;font-weight:700;font-size:1.1em;}
 .old-price{text-decoration:line-through;color:gray;font-size:0.9em;}
 .delivery{font-size:0.8em;color:green;}
-.cod{font-size:0.75em;color:#673ab7;}
 button{width:100%;padding:10px;margin-top:6px;border:none;border-radius:8px;font-weight:600;cursor:pointer;}
 .buy{background:#4caf50;color:white;}
 .cartbtn{background:#2196f3;color:white;}
@@ -31,21 +30,22 @@ button{width:100%;padding:10px;margin-top:6px;border:none;border-radius:8px;font
 .modal-content{background:white;width:95%;max-width:420px;border-radius:20px;padding:20px;text-align:center;position:relative;}
 .close{position:absolute;right:15px;top:10px;font-size:22px;cursor:pointer;}
 .slider img{width:100%;border-radius:12px;}
-.thumb-container{display:flex;gap:6px;justify-content:center;margin-top:8px;}
-.thumb-container img{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;}
+.thumb-container{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
+.thumb-container img{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;}
+.thumb-container img.active{border:2px solid #e91e63;}
 .qty{display:flex;justify-content:center;align-items:center;gap:12px;margin:10px 0;}
 .qty button{width:35px;height:35px;}
-.cart-drawer{position:fixed;right:-100%;top:0;width:300px;height:100%;background:white;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:0.4s;padding:20px;overflow-y:auto;}
+.cart-drawer{position:fixed;right:-100%;top:0;width:300px;height:100%;background:white;box-shadow:-5px 0 20px rgba(0,0,0,0.2);transition:0.4s;padding:20px;overflow-y:auto;z-index:1000;}
 .cart-drawer.active{right:0;}
 footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-top:20px;}
 </style>
 </head>
 <body>
 
-<div class="cart-icon" onclick="toggleCart()">🛒 Cart (<span id="cartCount">0</span>)</div>
+<div class="cart-icon" onclick="toggleCart()">🛒 (<span id="cartCount">0</span>)</div>
 
 <header>
-<img src="babytaby/banner.jpg">
+<img src="babytaby/images/banner.jpg">
 <div class="banner-text">
 <h1>BabyTaby</h1>
 <p>Premium Baby Essentials</p>
@@ -57,17 +57,19 @@ footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-to
 <div class="modal" id="modal">
 <div class="modal-content">
 <span class="close" onclick="closeModal()">×</span>
+
 <div class="slider">
 <button onclick="prevImg()">◀</button>
 <img id="mainImg">
 <button onclick="nextImg()">▶</button>
 </div>
+
 <div class="thumb-container" id="thumbs"></div>
+
 <h3 id="modalName"></h3>
 <p id="modalPrice"></p>
 <p class="delivery">Delivery: 4–8 Days</p>
 <p>5 Days Return/Replacement</p>
-<p class="cod">Cash On Delivery Available</p>
 
 <div class="qty">
 <button onclick="changeQty(-1)">-</button>
@@ -78,6 +80,7 @@ footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-to
 <button class="buy" onclick="buyNow()">Buy Now</button>
 <button class="cartbtn" onclick="addToCart()">Add to Cart</button>
 <button onclick="orderWhatsApp()">Order on WhatsApp</button>
+
 </div>
 </div>
 
@@ -91,9 +94,9 @@ footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-to
 
 <script>
 var products=[
-{id:1,name:"Baby Head Protector",price:399,oldPrice:599,images:["babytaby/product1_1.jpg","babytaby/product1_2.jpg","babytaby/product1_3.jpg","babytaby/product1_4.jpg","babytaby/product1_5.jpg"],best:true},
-{id:2,name:"Baby Knee Pads",price:249,oldPrice:299,images:["babytaby/product2_1.jpg","babytaby/product2_2.jpg","babytaby/product2_3.jpg","babytaby/product2_4.jpg","babytaby/product2_5.jpg"],best:false},
-{id:3,name:"Baby Safety Pillow",price:349,oldPrice:399,images:["babytaby/product3_1.jpg","babytaby/product3_2.jpg","babytaby/product3_3.jpg","babytaby/product3_4.jpg","babytaby/product3_5.jpg"],best:true}
+{id:1,name:"Baby Head Protector",price:399,oldPrice:599,images:["babytaby/images/product1_1.jpg","babytaby/images/product1_2.jpg","babytaby/images/product1_3.jpg","babytaby/images/product1_4.jpg","babytaby/images/product1_5.jpg"],best:true},
+{id:2,name:"Baby Knee Pads",price:249,oldPrice:299,images:["babytaby/images/product2_1.jpg","babytaby/images/product2_2.jpg","babytaby/images/product2_3.jpg","babytaby/images/product2_4.jpg","babytaby/images/product2_5.jpg"],best:false},
+{id:3,name:"Baby Safety Pillow",price:349,oldPrice:399,images:["babytaby/images/product3_1.jpg","babytaby/images/product3_2.jpg","babytaby/images/product3_3.jpg","babytaby/images/product3_4.jpg","babytaby/images/product3_5.jpg"],best:true}
 ];
 
 var selected,currentImg=0,quantity=1,cart=[];
@@ -104,10 +107,11 @@ function loadProducts(){
 var box=document.getElementById("productList");
 box.innerHTML="";
 products.forEach(p=>{
+var d=discount(p.oldPrice,p.price);
 box.innerHTML+=`
 <div class="card" onclick="openModal(${p.id})">
 ${p.best?'<div class="badge">Best Seller</div>':''}
-<div class="discount">-${discount(p.oldPrice,p.price)}%</div>
+<div class="discount">-${d}%</div>
 <img src="${p.images[0]}">
 <h4>${p.name}</h4>
 <p class="old-price">₹${p.oldPrice}</p>
@@ -125,16 +129,27 @@ document.getElementById("modalName").innerText=selected.name;
 document.getElementById("modalPrice").innerHTML=`<span class="old-price">₹${selected.oldPrice}</span> <span class="price">₹${selected.price}</span>`;
 document.getElementById("qty").innerText=quantity;
 var thumbs="";
-selected.images.forEach((img,i)=>{thumbs+=`<img src="${img}" onclick="setImg(${i})">`;});
+selected.images.forEach((img,i)=>{
+thumbs+=`<img src="${img}" onclick="setImg(${i})" class="${i==0?'active':''}">`;
+});
 document.getElementById("thumbs").innerHTML=thumbs;
 document.getElementById("modal").style.display="flex";
 }
 
-function closeModal(){document.getElementById("modal").style.display="none";}
+function updateThumbs(){
+var t=document.querySelectorAll("#thumbs img");
+t.forEach((img,i)=>img.classList.toggle("active",i===currentImg));
+}
+
 function nextImg(){currentImg=(currentImg+1)%selected.images.length;updateImg();}
 function prevImg(){currentImg=(currentImg-1+selected.images.length)%selected.images.length;updateImg();}
 function setImg(i){currentImg=i;updateImg();}
-function updateImg(){document.getElementById("mainImg").src=selected.images[currentImg];}
+function updateImg(){
+document.getElementById("mainImg").src=selected.images[currentImg];
+updateThumbs();
+}
+
+function closeModal(){document.getElementById("modal").style.display="none";}
 function changeQty(v){quantity+=v;if(quantity<1)quantity=1;document.getElementById("qty").innerText=quantity;}
 
 function buyNow(){
@@ -156,7 +171,7 @@ function updateCart(){
 var list=document.getElementById("cartItems");
 list.innerHTML="";
 var total=0;
-cart.forEach((item,i)=>{
+cart.forEach(item=>{
 total+=item.price*item.qty;
 list.innerHTML+=`<p>${item.name} x${item.qty} - ₹${item.price*item.qty}</p>`;
 });
