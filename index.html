@@ -29,7 +29,8 @@ button{width:100%;padding:10px;margin-top:6px;border:none;border-radius:8px;font
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;}
 .modal-content{background:white;width:95%;max-width:420px;border-radius:20px;padding:20px;text-align:center;position:relative;}
 .close{position:absolute;right:15px;top:10px;font-size:22px;cursor:pointer;}
-.slider img{width:100%;border-radius:12px;}
+.slider{display:flex;align-items:center;justify-content:center;gap:10px;}
+.slider img{width:100%;border-radius:12px;max-height:300px;object-fit:cover;}
 .thumb-container{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
 .thumb-container img{width:50px;height:50px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;}
 .thumb-container img.active{border:2px solid #e91e63;}
@@ -45,7 +46,7 @@ footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-to
 <div class="cart-icon" onclick="toggleCart()">🛒 (<span id="cartCount">0</span>)</div>
 
 <header>
-<img src="babytaby/images/banner.jpg">
+<img src="images/banner.jpg">
 <div class="banner-text">
 <h1>BabyTaby</h1>
 <p>Premium Baby Essentials</p>
@@ -94,9 +95,9 @@ footer{text-align:center;padding:20px;font-size:0.8em;background:white;margin-to
 
 <script>
 var products=[
-{id:1,name:"Baby Head Protector",price:399,oldPrice:599,images:["babytaby/images/product1_1.jpg","babytaby/images/product1_2.jpg","babytaby/images/product1_3.jpg","babytaby/images/product1_4.jpg","babytaby/images/product1_5.jpg"],best:true},
-{id:2,name:"Baby Knee Pads",price:249,oldPrice:299,images:["babytaby/images/product2_1.jpg","babytaby/images/product2_2.jpg","babytaby/images/product2_3.jpg","babytaby/images/product2_4.jpg","babytaby/images/product2_5.jpg"],best:false},
-{id:3,name:"Baby Safety Pillow",price:349,oldPrice:399,images:["babytaby/images/product3_1.jpg","babytaby/images/product3_2.jpg","babytaby/images/product3_3.jpg","babytaby/images/product3_4.jpg","babytaby/images/product3_5.jpg"],best:true}
+{id:1,name:"Baby Head Protector",price:399,oldPrice:599,images:["images/product1_1.jpg","images/product1_2.jpg","images/product1_3.jpg","images/product1_4.jpg","images/product1_5.jpg"],best:true},
+{id:2,name:"Baby Knee Pads",price:249,oldPrice:299,images:["images/product2_1.jpg","images/product2_2.jpg","images/product2_3.jpg","images/product2_4.jpg","images/product2_5.jpg"],best:false},
+{id:3,name:"Baby Safety Pillow",price:349,oldPrice:399,images:["images/product3_1.jpg","images/product3_2.jpg","images/product3_3.jpg","images/product3_4.jpg","images/product3_5.jpg"],best:true}
 ];
 
 var selected,currentImg=0,quantity=1,cart=[];
