@@ -277,11 +277,9 @@ Premium Baby Care Products for Your Little One 💖
 Order via WhatsApp
 </button>
 
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=dialog"
-target="_blank"
-class="btn cart-btn">
+<button onclick="orderCartGoogle()" class="btn cart-btn">
 Order via Google Form
-</a>
+</button>
 
 </div>
 
@@ -400,7 +398,27 @@ message+="%0ATotal: ₹"+total;
 
 window.open("https://wa.me/918889446299?text="+message,"_blank");
 }
+function orderCartGoogle(){
+if(cart.length===0){
+alert("Your cart is empty");
+return;
+}
 
+var summary="";
+var total=0;
+
+cart.forEach(item=>{
+summary+=item.name+" x "+item.qty+" = ₹"+(item.price*item.qty)+" , ";
+total+=item.price*item.qty;
+});
+
+var finalLink="https://docs.google.com/forms/d/e/1FAIpQLSf9jmBxghPrXxAybQ-XNb3EmbPoUr9GQhdtJc3XlodeQjM48Q/viewform?usp=pp_url"
++"&entry.166477120="+encodeURIComponent(summary)
++"&entry.178886703="+total
++"&entry.509043788=Cash+on+Delivery+(+COD+)";
+
+window.open(finalLink,"_blank");
+}
 function loadProducts(){
 var container=document.getElementById("products");
 products.forEach((p,i)=>{
@@ -475,6 +493,7 @@ updateCartUI();
 
 </body>
 </html>
+
 
 
 
